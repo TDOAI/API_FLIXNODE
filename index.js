@@ -1,17 +1,15 @@
-const fastify = require("fastify")();
+const express = require("express");
 
-// Initialize Express
+const app = express();
 
-
-// Create GET request
-fastify.get("/", (req, res) => {
-  res.send("Express on Vercel");
+app.get("/", (req, res) => {
+    const message = "YAYYY!!!!!"
+    res.send(JSON.stringify(message));
 });
 
-// Initialize server
-fastify.listen({ port: 3000 }, (err, address) => {
-    if (err) throw err
-    console.log(`Server is now listening on ${address}`)
+app.listen(5000, (err, address) => {
+  console.log(`Running on ${address}`);
 });
 
-module.exports = fastify
+// Export the Express API
+module.exports = app;
