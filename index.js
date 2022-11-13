@@ -4,14 +4,15 @@ const NodeCache = require( "node-cache" );
 const myCache = new NodeCache( { stdTTL: 100, checkperiod: 600 } );
 
 
-const slider = require('./slider')
+const slider = require('./slider');
+const popular = require('./popular')
 
 const app = express();
 app.use(compression());
 
 app.get("/", (req, res) => {
     const message = "Up & Running!!!!"
-    res.send(message);
+    res.json(message);
 });
 
 app.get("/slider", async(req, res) => {
@@ -25,6 +26,12 @@ app.get("/slider", async(req, res) => {
     const message = myCache.get( "slider" );
     res.json(message);
   }
+});
+
+app.get("/popular", async(req, res) => {
+  const { type } = req.query
+  const message = await popular.main(type)
+  res.json(message);
 });
 
 app.listen(5000, () => {
