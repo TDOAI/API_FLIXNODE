@@ -19,7 +19,7 @@ app.get("/slider", async(req, res) => {
   value = myCache.get( "slider" );
   if ( value == undefined ){
     const message = await slider.main()
-    myCache.set( "slider", message, 3600 );
+    myCache.set( "slider", message, 7200 );
     res.json(message);
   }
   else {
@@ -30,8 +30,16 @@ app.get("/slider", async(req, res) => {
 
 app.get("/popular", async(req, res) => {
   const { type } = req.query
-  const message = await popular.main(type)
-  res.json(message);
+  value = myCache.get( `popular:${type}` );
+  if ( value == undefined ){
+    const message = await popular.main(type)
+    myCache.set( `popular:${type}`, message, 7200 );
+    res.json(message);
+  } 
+  else {
+    const message = myCache.get( `popular:${type}` );
+    res.json(message);
+  }
 });
 
 app.listen(5000, () => {
