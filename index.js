@@ -6,6 +6,7 @@ const myCache = new NodeCache( { stdTTL: 100, checkperiod: 600 } );
 
 const slider = require('./slider');
 const popular = require('./popular')
+const genre = require('./genres')
 
 const app = express();
 app.use(compression());
@@ -38,6 +39,19 @@ app.get("/popular", async(req, res) => {
   } 
   else {
     const message = myCache.get( `popular:${type}` );
+    res.json(message);
+  }
+});
+
+app.get("/genre/list", async(req, res) => {
+  value = myCache.get( "genre/list" );
+  if ( value == undefined ){
+    const message = await genre.main()
+    myCache.set( "genre/list", message, 21600 );
+    res.json(message);
+  }
+  else {
+    const message = myCache.get( "genre/list" );
     res.json(message);
   }
 });
