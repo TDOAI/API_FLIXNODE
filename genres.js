@@ -33,7 +33,6 @@ const common = async (res_movie, res_tv) => {
         const promises = await (res_tv|| []).map(async genre => {
             for (let i = 0 ; i<res_movie.length;i++) {
                 if ( res_movie[i].id == genre.id ) {
-                    genre["type"] = ""
                     cross.push(genre)
                 }
             }
@@ -71,13 +70,29 @@ async function tv_only (res_tv, cross) {
     return res_tv
 }
 
+
+async function sort(array){
+const sortarr = array.sort(function(a, b){
+    let nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+    if (nameA < nameB)
+        return -1;
+    if (nameA > nameB)
+        return 1;
+    return 0;
+})
+sortarr.unshift({ id: 0, name: 'Popular & Latest'})
+return sortarr
+}
+
 async function main () {
     const res_movie = await fetch_movie()
     const res_tv = await fetch_tv()
     const cross = await common(res_movie, res_tv)
     const movie = await movie_only(res_movie, cross)
     const tv = await tv_only(res_tv, cross)
-    return [...cross, ...movie, ...tv]
+    const array = [...cross, ...movie, ...tv]
+    const sorted = await sort(array)
+    return sorted
 }
 
 // main().then((data) => console.log(data)).catch((error) => console.log(error))

@@ -47,7 +47,7 @@ app.get("/genre/list", async(req, res) => {
   value = myCache.get( "genre/list" );
   if ( value == undefined ){
     const message = await genre.main()
-    myCache.set( "genre/list", message, 21600 );
+    myCache.set( "genre/list", message, 600 );
     res.json(message);
   }
   else {

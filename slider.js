@@ -8,7 +8,7 @@ const base_url = process.env.BASE_URL;
 const api_key = process.env.API_KEY;
 const DB = process.env.DB_URL;
 const movie_url_1 = `${base_url}trending/movie/day?api_key=${api_key}&language=en-US&page=1`;
-const tv_url_1 = `${base_url}trending/tv/day?api_key=${api_key}&language=en-US&page=1`;
+const tv_url_1 = `${base_url}trending/tv/week?api_key=${api_key}&language=en-US&page=1`;
 
 
 
